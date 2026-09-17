@@ -39,8 +39,9 @@ el estado actual, la sucursal/hub asignado y el historial cronológico en una
 - ✅ **Seguridad por API Key** (header `x-api-key`) en todos los endpoints de la API.
 - ✅ **Reglas de negocio**: `404` si el código no existe, `400` si la franja horaria ya pasó.
 - ✅ **Validación** de datos (dirección no vacía, peso numérico positivo) en front y back.
+- ✅ **Navegación con sidebar**: cada opción (Inicio, Solicitar, Consultar) en su propia pantalla (React Router).
 - ✅ **Línea de tiempo horizontal** que resalta el estado actual + historial detallado.
-- ✅ **Diseño responsivo** (móvil y escritorio).
+- ✅ **Diseño responsivo** (móvil y escritorio); en móvil el sidebar se convierte en un *drawer*.
 - ✅ **Notificación simulada** (correo/SMS en consola) al cambiar de estado.
 - ✅ **Dockerización** completa con `docker-compose`.
 - ✅ **Swagger/OpenAPI** interactivo.
@@ -111,9 +112,10 @@ Ver el detalle en [`docs/arquitectura.md`](docs/arquitectura.md).
 ├── frontend/                     # SPA (React + Vite)
 │   ├── src/
 │   │   ├── api/                  # cliente HTTP de la API
-│   │   ├── components/           # Header, RequestForm, TrackSearch, Timeline…
+│   │   ├── components/           # Sidebar, Layout, RequestForm, TrackSearch, Timeline…
+│   │   ├── pages/                # HomePage, SolicitarPage, ConsultarPage (una por pantalla)
 │   │   ├── styles/               # estilos globales + paleta
-│   │   └── App.jsx
+│   │   └── App.jsx               # router (React Router) + rutas
 │   ├── Dockerfile
 │   ├── nginx.conf
 │   └── .env.example
