@@ -11,5 +11,6 @@ app.listen(env.port, () => {
   console.log(`  Servidor:  http://localhost:${env.port}`);
   console.log(`  Health:    http://localhost:${env.port}/health`);
   console.log(`  API:       http://localhost:${env.port}/api/recolecciones`);
+  console.log(`  Swagger:   http://localhost:${env.port}/api-docs`);
   console.log('  (Recuerda enviar el header x-api-key en cada petición)\n');
 });

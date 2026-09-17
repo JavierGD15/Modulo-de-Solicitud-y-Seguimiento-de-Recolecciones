@@ -1,9 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
 
 import env from './config/env.js';
 import apiRoutes from './routes/index.js';
+import swaggerSpec from './docs/swagger.js';
 import { notFoundHandler } from './middlewares/notFound.middleware.js';
 import { errorHandler } from './middlewares/errorHandler.middleware.js';
 
@@ -25,6 +27,17 @@ export function createApp() {
   app.get('/health', (_req, res) => {
     res.json({ success: true, status: 'ok', timestamp: new Date().toISOString() });
   });
+
+  // Documentación Swagger / OpenAPI
+  app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      customSiteTitle: 'API Recolecciones — Cargo Express',
+    }),
+  );
+  // Especificación OpenAPI en crudo (JSON)
+  app.get('/api-docs.json', (_req, res) => res.json(swaggerSpec));
 
   // Rutas de la API
   app.use('/api', apiRoutes);
