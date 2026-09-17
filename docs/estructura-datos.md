@@ -1,8 +1,9 @@
 # Estructura de datos
 
-El almacenamiento se simula con archivos **JSON** (`backend/src/data/`), pero el
-modelo está diseñado para trasladarse directamente a una base de datos
-relacional (MySQL/SQL Server) gracias al patrón Repository.
+El almacenamiento usa **MySQL 8**. El esquema y los datos de prueba están en
+`db/init/` (`01-schema.sql` y `02-seed.sql`), que se ejecutan automáticamente al
+inicializar el contenedor de MySQL o con `npm run db:setup` en local. El acceso
+está aislado tras el patrón Repository (`backend/src/repositories/`).
 
 ## Diagrama Entidad–Relación
 
@@ -50,18 +51,23 @@ erDiagram
     }
 ```
 
-> En la implementación con JSON, `CLIENTE` y `EVENTO_HISTORIAL` se almacenan
-> embebidos dentro de cada documento `RECOLECCION` (modelo orientado a documento).
-> En un modelo relacional serían tablas independientes relacionadas por
-> `codigo` / `sucursalId`.
+> Los datos del `CLIENTE` se guardan como columnas dentro de `recoleccion`
+> (`cliente_nombre`, `cliente_email`, `cliente_telefono`), mientras que
+> `EVENTO_HISTORIAL` es una tabla independiente relacionada por
+> `recoleccion_codigo`. La `cobertura` de cada sucursal se almacena como columna
+> `JSON`.
 
-## Modelo relacional equivalente (referencia SQL)
+## Esquema SQL (implementación real)
+
+> Fuente autoritativa: [`db/init/01-schema.sql`](../db/init/01-schema.sql) y
+> [`db/init/02-seed.sql`](../db/init/02-seed.sql).
 
 ```sql
 CREATE TABLE sucursal (
   id           VARCHAR(10)  PRIMARY KEY,
   nombre       VARCHAR(120) NOT NULL,
-  departamento VARCHAR(80)
+  departamento VARCHAR(80),
+  cobertura    JSON
 );
 
 CREATE TABLE recoleccion (

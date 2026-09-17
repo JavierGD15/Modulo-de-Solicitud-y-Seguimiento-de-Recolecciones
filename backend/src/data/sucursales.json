@@ -1,7 +1,0 @@
-[
-  { "id": "MIX-01", "nombre": "Sucursal Central Mixco", "departamento": "Guatemala", "cobertura": ["Mixco", "Guatemala", "Villa Nueva"] },
-  { "id": "GUA-02", "nombre": "Hub Metropolitano Zona 4", "departamento": "Guatemala", "cobertura": ["Guatemala", "Santa Catarina Pinula"] },
-  { "id": "QTZ-03", "nombre": "Hub Quetzaltenango", "departamento": "Quetzaltenango", "cobertura": ["Quetzaltenango", "Salcajá", "Xela"] },
-  { "id": "ESC-04", "nombre": "Sucursal Escuintla", "departamento": "Escuintla", "cobertura": ["Escuintla", "Palín", "Santa Lucía"] },
-  { "id": "PET-05", "nombre": "Hub Petén Santa Elena", "departamento": "Petén", "cobertura": ["Flores", "Santa Elena", "San Benito"] }
-]

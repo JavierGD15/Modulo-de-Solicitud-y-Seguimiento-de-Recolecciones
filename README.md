@@ -55,7 +55,7 @@ el estado actual, la sucursal/hub asignado y el historial cronológico en una
 | --------- | ------------------------------------------------------ |
 | Frontend  | React 18 + Vite, CSS puro (paleta Cargo Express)       |
 | Backend   | Node.js 20 + Express, ES Modules                       |
-| Datos     | Archivo JSON (patrón Repository, migrable a SQL)       |
+| Datos     | **MySQL 8** (patrón Repository con `mysql2`)           |
 | Docs      | Swagger UI + swagger-jsdoc (OpenAPI 3.0)               |
 | Deploy    | Docker + Nginx + docker-compose                        |
 
@@ -95,20 +95,22 @@ Ver el detalle en [`docs/arquitectura.md`](docs/arquitectura.md).
 .
 ├── backend/                      # API REST (Express)
 │   ├── src/
-│   │   ├── config/               # env + constantes (estados, franjas)
+│   │   ├── config/               # env + constantes + pool MySQL (db.js)
 │   │   ├── controllers/          # capa HTTP
 │   │   ├── services/             # lógica de negocio + notificaciones
-│   │   ├── repositories/         # patrón Repository (JSON)
+│   │   ├── repositories/         # patrón Repository (MySQL / mysql2)
 │   │   ├── routes/               # definición de rutas + anotaciones Swagger
 │   │   ├── middlewares/          # apiKey, errorHandler, notFound
 │   │   ├── validators/           # validación de entrada
 │   │   ├── utils/                # AppError, asyncHandler, codeGenerator
 │   │   ├── docs/                 # configuración Swagger/OpenAPI
-│   │   ├── data/                 # datos precargados (JSON)
 │   │   ├── app.js                # ensamblado de la app
-│   │   └── server.js             # arranque del servidor
+│   │   └── server.js             # arranque del servidor (espera a MySQL)
+│   ├── scripts/initDb.js         # inicializa la BD en local (npm run db:setup)
 │   ├── Dockerfile
 │   └── .env.example
+├── db/
+│   └── init/                     # 01-schema.sql + 02-seed.sql (auto en Docker)
 ├── frontend/                     # SPA (React + Vite)
 │   ├── src/
 │   │   ├── api/                  # cliente HTTP de la API
@@ -133,18 +135,23 @@ Ver el detalle en [`docs/arquitectura.md`](docs/arquitectura.md).
 ## 🔧 Requisitos
 
 - **Node.js** ≥ 18 (recomendado 20) y **npm** ≥ 9
-- **Docker** y **Docker Compose** (opcional, para la opción con contenedores)
+- **MySQL** 8 (solo para ejecución local; con Docker se levanta automáticamente)
+- **Docker** y **Docker Compose** (recomendado: levanta MySQL + API + web con un comando)
 
 ---
 
 ## 🚀 Puesta en marcha (local)
 
+> **Requiere un MySQL 8 en ejecución.** Si no quieres instalarlo, usa la opción
+> con Docker (más abajo), que levanta MySQL automáticamente.
+
 ### 1) Backend
 
 ```bash
 cd backend
-cp .env.example .env      # crea tu archivo de variables
+cp .env.example .env      # ajusta credenciales de MySQL si es necesario
 npm install
+npm run db:setup          # crea la BD, el esquema y carga los datos de prueba
 npm run dev               # o: npm start
 ```
 
@@ -172,7 +179,8 @@ La aplicación web queda en **http://localhost:5173**
 
 ## 🐳 Puesta en marcha con Docker
 
-Desde la raíz del proyecto:
+Levanta **MySQL + API + web** con un solo comando (MySQL se inicializa con el
+esquema y los datos de prueba de `db/init/` de forma automática):
 
 ```bash
 cp .env.example .env
@@ -182,8 +190,9 @@ docker compose up --build
 - Frontend: **http://localhost:8080**
 - Backend/API: **http://localhost:4000**
 - Swagger: **http://localhost:4000/api-docs**
+- MySQL: **localhost:3306** (base `recolecciones`)
 
-Para detener: `docker compose down`.
+Para detener: `docker compose down` · Para borrar también los datos: `docker compose down -v`.
 
 ---
 
@@ -199,6 +208,11 @@ Cada servicio incluye su propio `.env.example`. Cópialo a `.env` antes de ejecu
 | `NODE_ENV`    | Entorno                                        | `development`                  |
 | `API_KEY`     | Clave esperada en el header `x-api-key`       | `cargo-express-demo-key-2026`  |
 | `CORS_ORIGIN` | Origen permitido por CORS                     | `http://localhost:5173`        |
+| `DB_HOST`     | Host de MySQL                                  | `localhost`                    |
+| `DB_PORT`     | Puerto de MySQL                                | `3306`                         |
+| `DB_USER`     | Usuario de MySQL                               | `recolecciones`                |
+| `DB_PASSWORD` | Contraseña de MySQL                            | `recolecciones123`             |
+| `DB_NAME`     | Nombre de la base de datos                     | `recolecciones`                |
 
 **Frontend** (`frontend/.env`):
 
@@ -207,7 +221,7 @@ Cada servicio incluye su propio `.env.example`. Cópialo a `.env` antes de ejecu
 | `VITE_API_BASE_URL` | URL base de la API                   | `http://localhost:4000`       |
 | `VITE_API_KEY`      | API Key enviada en `x-api-key`       | `cargo-express-demo-key-2026` |
 
-**Raíz** (`.env`, para `docker-compose`): `API_KEY`, `BACKEND_PORT`, `FRONTEND_PORT`, `CORS_ORIGIN`, `VITE_API_BASE_URL`.
+**Raíz** (`.env`, para `docker-compose`): `API_KEY`, `BACKEND_PORT`, `FRONTEND_PORT`, `CORS_ORIGIN`, `VITE_API_BASE_URL`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_ROOT_PASSWORD`, `DB_PORT`.
 
 ---
 
@@ -383,9 +397,9 @@ Ejemplo de una solicitud:
 - **Arquitectura en capas** (routes → controller → service → repository): cada
   capa tiene una única responsabilidad y es fácil de testear/mantener.
 - **Patrón Repository:** la persistencia está aislada tras una interfaz
-  (`findAll`, `findByCodigo`, `create`, `update`). Hoy usa un archivo JSON, pero
-  migrar a **MySQL/SQL Server** solo requiere crear otra implementación del
-  repositorio, **sin tocar la lógica de negocio**.
+  (`findAll`, `findByCodigo`, `create`, `registrarCambioEstado`) implementada
+  sobre **MySQL** (`mysql2`). Cambiar de motor solo requiere crear otra
+  implementación del repositorio, **sin tocar la lógica de negocio**.
 - **Inyección de dependencias:** el service recibe sus repositorios y el
   notificador por constructor (facilita el mockeo en pruebas).
 - **Manejo de errores centralizado:** clase `AppError` + middleware único que

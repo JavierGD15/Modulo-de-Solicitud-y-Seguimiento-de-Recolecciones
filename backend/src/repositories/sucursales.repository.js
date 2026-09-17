@@ -1,25 +1,31 @@
-import { readFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = path.join(__dirname, '..', 'data', 'sucursales.json');
+import pool from '../config/db.js';
 
 /**
- * Repositorio de sucursales/hubs (solo lectura).
+ * Repositorio de sucursales/hubs (solo lectura) respaldado por MySQL.
  * Se usa para asignar automáticamente una sucursal a cada nueva solicitud.
  */
-export class JsonSucursalesRepository {
-  #dataFile;
+export class MysqlSucursalesRepository {
+  #pool;
 
-  constructor(dataFile = DATA_FILE) {
-    this.#dataFile = dataFile;
+  constructor(dbPool = pool) {
+    this.#pool = dbPool;
   }
 
+  /** @returns {Promise<Array>} Sucursales con su cobertura (array). */
   async findAll() {
-    const raw = await readFile(this.#dataFile, 'utf-8');
-    return JSON.parse(raw);
+    const [rows] = await this.#pool.query(
+      'SELECT id, nombre, departamento, cobertura FROM sucursal',
+    );
+    return rows.map((s) => ({
+      id: s.id,
+      nombre: s.nombre,
+      departamento: s.departamento,
+      // La columna JSON puede venir ya parseada (array) o como texto según el driver.
+      cobertura: Array.isArray(s.cobertura)
+        ? s.cobertura
+        : JSON.parse(s.cobertura || '[]'),
+    }));
   }
 }
 
-export default new JsonSucursalesRepository();
+export default new MysqlSucursalesRepository();

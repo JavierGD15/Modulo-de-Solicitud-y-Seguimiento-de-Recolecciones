@@ -122,10 +122,10 @@ export class RecoleccionesService {
       descripcion: descripcion || `Estado actualizado a "${ESTADOS[nuevoEstado]}".`,
     };
 
-    const actualizada = await this.#repo.update(codigo, {
+    const actualizada = await this.#repo.registrarCambioEstado(codigo, {
       estadoActual: nuevoEstado,
       updatedAt: ahora,
-      historial: [...recoleccion.historial, evento],
+      evento,
     });
 
     this.#notifier.notificarCambioEstado(actualizada, nuevoEstado);
