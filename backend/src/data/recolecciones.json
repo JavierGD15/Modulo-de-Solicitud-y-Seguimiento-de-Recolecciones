@@ -1,0 +1,152 @@
+[
+  {
+    "codigo": "REC-2026-CARGO001",
+    "direccion": "5a Avenida 12-34, Zona 1, Ciudad de Guatemala",
+    "fechaRecoleccion": "2026-09-18",
+    "franjaHoraria": "08:00-12:00",
+    "pesoAproximado": 3.5,
+    "estadoActual": "PENDIENTE_ASIGNACION",
+    "sucursal": { "id": "GUA-02", "nombre": "Hub Metropolitano Zona 4" },
+    "cliente": { "nombre": "María López", "email": "maria.lopez@example.com", "telefono": "+502 5555-1001" },
+    "historial": [
+      {
+        "estado": "PENDIENTE_ASIGNACION",
+        "etiqueta": "Pendiente de Asignación",
+        "fecha": "2026-09-17T09:15:00.000Z",
+        "descripcion": "Solicitud registrada. En espera de asignación de recolector."
+      }
+    ],
+    "createdAt": "2026-09-17T09:15:00.000Z",
+    "updatedAt": "2026-09-17T09:15:00.000Z"
+  },
+  {
+    "codigo": "REC-2026-CARGO002",
+    "direccion": "Calzada Roosevelt 22-15, Zona 11, Mixco",
+    "fechaRecoleccion": "2026-09-18",
+    "franjaHoraria": "12:00-16:00",
+    "pesoAproximado": 12.0,
+    "estadoActual": "RECOLECTOR_EN_CAMINO",
+    "sucursal": { "id": "MIX-01", "nombre": "Sucursal Central Mixco" },
+    "cliente": { "nombre": "Carlos Ramírez", "email": "carlos.ramirez@example.com", "telefono": "+502 5555-1002" },
+    "historial": [
+      {
+        "estado": "PENDIENTE_ASIGNACION",
+        "etiqueta": "Pendiente de Asignación",
+        "fecha": "2026-09-16T14:00:00.000Z",
+        "descripcion": "Solicitud registrada. En espera de asignación de recolector."
+      },
+      {
+        "estado": "RECOLECTOR_EN_CAMINO",
+        "etiqueta": "Recolector en Camino",
+        "fecha": "2026-09-17T08:30:00.000Z",
+        "descripcion": "Recolector asignado. La unidad se dirige a la dirección indicada."
+      }
+    ],
+    "createdAt": "2026-09-16T14:00:00.000Z",
+    "updatedAt": "2026-09-17T08:30:00.000Z"
+  },
+  {
+    "codigo": "REC-2026-CARGO003",
+    "direccion": "4a Calle 8-90, Zona 3, Quetzaltenango",
+    "fechaRecoleccion": "2026-09-15",
+    "franjaHoraria": "08:00-12:00",
+    "pesoAproximado": 1.2,
+    "estadoActual": "RECOLECTADO",
+    "sucursal": { "id": "QTZ-03", "nombre": "Hub Quetzaltenango" },
+    "cliente": { "nombre": "Ana Say", "email": "ana.say@example.com", "telefono": "+502 5555-1003" },
+    "historial": [
+      {
+        "estado": "PENDIENTE_ASIGNACION",
+        "etiqueta": "Pendiente de Asignación",
+        "fecha": "2026-09-14T10:00:00.000Z",
+        "descripcion": "Solicitud registrada. En espera de asignación de recolector."
+      },
+      {
+        "estado": "RECOLECTOR_EN_CAMINO",
+        "etiqueta": "Recolector en Camino",
+        "fecha": "2026-09-15T08:05:00.000Z",
+        "descripcion": "Recolector asignado. La unidad se dirige a la dirección indicada."
+      },
+      {
+        "estado": "RECOLECTADO",
+        "etiqueta": "Recolectado",
+        "fecha": "2026-09-15T09:40:00.000Z",
+        "descripcion": "Paquete recolectado exitosamente e ingresado al hub."
+      }
+    ],
+    "createdAt": "2026-09-14T10:00:00.000Z",
+    "updatedAt": "2026-09-15T09:40:00.000Z"
+  },
+  {
+    "codigo": "REC-2026-CARGO004",
+    "direccion": "Avenida Centroamérica 5-01, Zona 1, Escuintla",
+    "fechaRecoleccion": "2026-09-16",
+    "franjaHoraria": "16:00-20:00",
+    "pesoAproximado": 25.75,
+    "estadoActual": "CANCELADA",
+    "sucursal": { "id": "ESC-04", "nombre": "Sucursal Escuintla" },
+    "cliente": { "nombre": "Jorge Pérez", "email": "jorge.perez@example.com", "telefono": "+502 5555-1004" },
+    "historial": [
+      {
+        "estado": "PENDIENTE_ASIGNACION",
+        "etiqueta": "Pendiente de Asignación",
+        "fecha": "2026-09-15T18:20:00.000Z",
+        "descripcion": "Solicitud registrada. En espera de asignación de recolector."
+      },
+      {
+        "estado": "CANCELADA",
+        "etiqueta": "Cancelada",
+        "fecha": "2026-09-16T07:00:00.000Z",
+        "descripcion": "Solicitud cancelada a petición del cliente."
+      }
+    ],
+    "createdAt": "2026-09-15T18:20:00.000Z",
+    "updatedAt": "2026-09-16T07:00:00.000Z"
+  },
+  {
+    "codigo": "REC-2026-CARGO005",
+    "direccion": "Barrio Santa Elena, 3a Avenida 2-45, Flores, Petén",
+    "fechaRecoleccion": "2026-09-19",
+    "franjaHoraria": "12:00-16:00",
+    "pesoAproximado": 8.3,
+    "estadoActual": "PENDIENTE_ASIGNACION",
+    "sucursal": { "id": "PET-05", "nombre": "Hub Petén Santa Elena" },
+    "cliente": { "nombre": "Lucía Morales", "email": "lucia.morales@example.com", "telefono": "+502 5555-1005" },
+    "historial": [
+      {
+        "estado": "PENDIENTE_ASIGNACION",
+        "etiqueta": "Pendiente de Asignación",
+        "fecha": "2026-09-17T11:45:00.000Z",
+        "descripcion": "Solicitud registrada. En espera de asignación de recolector."
+      }
+    ],
+    "createdAt": "2026-09-17T11:45:00.000Z",
+    "updatedAt": "2026-09-17T11:45:00.000Z"
+  },
+  {
+    "codigo": "REC-2026-CARGO006",
+    "direccion": "Diagonal 6 10-01, Zona 10, Ciudad de Guatemala",
+    "fechaRecoleccion": "2026-09-20",
+    "franjaHoraria": "08:00-12:00",
+    "pesoAproximado": 5.0,
+    "estadoActual": "RECOLECTOR_EN_CAMINO",
+    "sucursal": { "id": "GUA-02", "nombre": "Hub Metropolitano Zona 4" },
+    "cliente": { "nombre": "Diego Castillo", "email": "diego.castillo@example.com", "telefono": "+502 5555-1006" },
+    "historial": [
+      {
+        "estado": "PENDIENTE_ASIGNACION",
+        "etiqueta": "Pendiente de Asignación",
+        "fecha": "2026-09-17T07:30:00.000Z",
+        "descripcion": "Solicitud registrada. En espera de asignación de recolector."
+      },
+      {
+        "estado": "RECOLECTOR_EN_CAMINO",
+        "etiqueta": "Recolector en Camino",
+        "fecha": "2026-09-17T12:10:00.000Z",
+        "descripcion": "Recolector asignado. La unidad se dirige a la dirección indicada."
+      }
+    ],
+    "createdAt": "2026-09-17T07:30:00.000Z",
+    "updatedAt": "2026-09-17T12:10:00.000Z"
+  }
+]
