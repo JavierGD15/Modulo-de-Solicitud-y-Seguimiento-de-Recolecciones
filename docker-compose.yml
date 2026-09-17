@@ -1,10 +1,31 @@
-# Orquestación del proyecto completo (backend + frontend).
+# Orquestación del proyecto completo (MySQL + backend + frontend).
 # Uso:
 #   cp .env.example .env
 #   docker compose up --build
 # Luego abre:  http://localhost:${FRONTEND_PORT:-8080}
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: recolecciones-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${DB_NAME:-recolecciones}
+      MYSQL_USER: ${DB_USER:-recolecciones}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-recolecciones123}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Los scripts de db/init se ejecutan automáticamente al crear la BD.
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD:-rootpass}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
   backend:
     build:
       context: ./backend
@@ -15,8 +36,16 @@ services:
       PORT: 4000
       API_KEY: ${API_KEY:-cargo-express-demo-key-2026}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-recolecciones}
+      DB_PASSWORD: ${DB_PASSWORD:-recolecciones123}
+      DB_NAME: ${DB_NAME:-recolecciones}
     ports:
       - "${BACKEND_PORT:-4000}:4000"
+    depends_on:
+      mysql:
+        condition: service_healthy
     restart: unless-stopped
 
   frontend:
@@ -32,3 +61,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+volumes:
+  mysql_data:

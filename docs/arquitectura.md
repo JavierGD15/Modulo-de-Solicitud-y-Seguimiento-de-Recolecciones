@@ -15,8 +15,8 @@ flowchart TD
         C["Controller<br/>(HTTP ↔ negocio)"]
         S["Service<br/>(lógica de negocio)"]
         N["NotificationService<br/>(email/SMS simulado)"]
-        REPO["Repository<br/>(patrón Repository)"]
-        DB[("recolecciones.json<br/>sucursales.json")]
+        REPO["Repository<br/>(patrón Repository · mysql2)"]
+        DB[("MySQL 8<br/>recoleccion · sucursal · evento_historial")]
     end
 
     UI -- "HTTP + x-api-key" --> R
@@ -35,7 +35,7 @@ flowchart TD
 | **Controller**  | Adaptar la petición/respuesta HTTP; no contiene reglas de negocio.     | `controllers/` |
 | **Validator**   | Validar y normalizar la entrada del cliente.                           | `validators/` |
 | **Service**     | Reglas de negocio: 404/400, asignación de sucursal, historial, notif.  | `services/` |
-| **Repository**  | Persistencia aislada tras una interfaz (migrable a SQL).               | `repositories/` |
+| **Repository**  | Persistencia en MySQL aislada tras una interfaz (motor intercambiable).| `repositories/` |
 | **Utils/Config**| `AppError`, `asyncHandler`, generador de código, constantes, env.      | `utils/`, `config/` |
 
 ## Principios aplicados
