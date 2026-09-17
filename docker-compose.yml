@@ -1,0 +1,34 @@
+# Orquestación del proyecto completo (backend + frontend).
+# Uso:
+#   cp .env.example .env
+#   docker compose up --build
+# Luego abre:  http://localhost:${FRONTEND_PORT:-8080}
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: recolecciones-backend
+    container_name: recolecciones-backend
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      API_KEY: ${API_KEY:-cargo-express-demo-key-2026}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:4000}
+        VITE_API_KEY: ${API_KEY:-cargo-express-demo-key-2026}
+    image: recolecciones-frontend
+    container_name: recolecciones-frontend
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
