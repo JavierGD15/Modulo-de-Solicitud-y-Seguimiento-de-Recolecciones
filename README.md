@@ -23,6 +23,7 @@ el estado actual, la sucursal/hub asignado y el historial cronológico en una
 - [Variables de entorno](#-variables-de-entorno)
 - [API: endpoints y cómo probarlos](#-api-endpoints-y-cómo-probarlos)
 - [Documentación Swagger](#-documentación-swagger)
+- [Manuales](#-manuales)
 - [Estados y reglas de negocio](#-estados-y-reglas-de-negocio)
 - [Notificación simulada](#-notificación-simulada)
 - [Estructura de datos](#-estructura-de-datos)
@@ -318,6 +319,15 @@ Con el backend en ejecución:
 - **Especificación OpenAPI (JSON):** http://localhost:4000/api-docs.json
 
 En la UI, pulsa **"Authorize"** e introduce la API Key para poder ejecutar las peticiones desde el navegador.
+
+Guía detallada: [Manual Técnico de Swagger](docs/MANUAL_TECNICO_SWAGGER.md).
+
+---
+
+## 📚 Manuales
+
+- 📘 [**Manual de Usuario**](docs/MANUAL_USUARIO.md) — uso del portal web, paso a paso y con capturas.
+- 🛠️ [**Manual Técnico de Swagger**](docs/MANUAL_TECNICO_SWAGGER.md) — cómo funciona y se usa la documentación de la API.
 
 ---
 

@@ -1,11 +1,5 @@
 import { Link } from 'react-router-dom';
 
-const CODIGOS_DEMO = [
-  { codigo: 'REC-2026-CARGO002', estado: 'Recolector en Camino' },
-  { codigo: 'REC-2026-CARGO003', estado: 'Recolectado' },
-  { codigo: 'REC-2026-CARGO004', estado: 'Cancelada' },
-];
-
 export default function HomePage() {
   return (
     <div className="page">
@@ -41,21 +35,6 @@ export default function HomePage() {
           <span className="action-card__cta">Consultar →</span>
         </Link>
       </div>
-
-      <section className="card" style={{ marginTop: 4 }}>
-        <h3 style={{ fontSize: '1rem' }}>Códigos de ejemplo para probar</h3>
-        <p className="card__subtitle" style={{ marginBottom: 12 }}>
-          Usa estos códigos precargados en la pantalla de consulta.
-        </p>
-        <div className="demo-codes">
-          {CODIGOS_DEMO.map((d) => (
-            <Link key={d.codigo} to={`/consultar/${d.codigo}`} className="demo-code">
-              <span className="demo-code__code">{d.codigo}</span>
-              <span className="demo-code__estado">{d.estado}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
