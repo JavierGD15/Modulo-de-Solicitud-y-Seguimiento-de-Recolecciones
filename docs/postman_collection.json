@@ -1,0 +1,104 @@
+{
+  "info": {
+    "name": "Recolecciones — Cargo Express",
+    "description": "Colección para probar la API de solicitud y seguimiento de recolecciones. Configura las variables de colección `baseUrl` y `apiKey`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "apiKey", "value": "cargo-express-demo-key-2026" },
+    { "key": "codigo", "value": "REC-2026-CARGO002" }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+      }
+    },
+    {
+      "name": "Crear recolección (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"direccion\": \"7a Avenida 1-01, Zona 9, Guatemala\",\n  \"fechaRecoleccion\": \"2026-12-20\",\n  \"franjaHoraria\": \"08:00-12:00\",\n  \"pesoAproximado\": 4.2,\n  \"cliente\": { \"nombre\": \"Ana Pérez\", \"email\": \"ana@example.com\", \"telefono\": \"+502 5555-0000\" }\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/recolecciones", "host": ["{{baseUrl}}"], "path": ["api", "recolecciones"] }
+      }
+    },
+    {
+      "name": "Consultar recolección (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/recolecciones/{{codigo}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "recolecciones", "{{codigo}}"]
+        }
+      }
+    },
+    {
+      "name": "Cambiar estado (200 + notificación)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"estado\": \"RECOLECTOR_EN_CAMINO\"\n}" },
+        "url": {
+          "raw": "{{baseUrl}}/api/recolecciones/REC-2026-CARGO001/estado",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "recolecciones", "REC-2026-CARGO001", "estado"]
+        }
+      }
+    },
+    {
+      "name": "Error 404 (código inexistente)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/recolecciones/NO-EXISTE",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "recolecciones", "NO-EXISTE"]
+        }
+      }
+    },
+    {
+      "name": "Error 400 (franja ya pasada)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"direccion\": \"Calle 1\",\n  \"fechaRecoleccion\": \"2020-01-01\",\n  \"franjaHoraria\": \"08:00-12:00\",\n  \"pesoAproximado\": 2\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/recolecciones", "host": ["{{baseUrl}}"], "path": ["api", "recolecciones"] }
+      }
+    },
+    {
+      "name": "Error 401 (sin API Key)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/recolecciones/{{codigo}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "recolecciones", "{{codigo}}"]
+        }
+      }
+    }
+  ]
+}

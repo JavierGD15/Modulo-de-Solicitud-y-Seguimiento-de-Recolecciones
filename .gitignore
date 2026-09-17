@@ -27,3 +27,6 @@ coverage/
 
 # Docker
 *.pid
+
+# Documento original de la prueba (no se versiona)
+*.docx
